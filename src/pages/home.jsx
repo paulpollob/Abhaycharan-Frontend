@@ -1,5 +1,4 @@
-import { useNavigate } from "react-router-dom"
-import Navbar from "./nabbar";
+import { useNavigate } from "react-router-dom" 
 
 function Home() {
   const navigate = useNavigate();
@@ -33,6 +32,7 @@ function Home() {
                 <div className="flex flex-wrap justify-center gap-6">
                     <button className="btn btn-primary w-48" onClick={() => navigate('/sale')} >Process Sale</button>
                     <button className="btn btn-secondary w-48" onClick={()=>navigate('/product')}>Add Product</button>
+                    <button className="btn btn-warning w-48" onClick={()=>navigate('/damageProduct')}>Damage Products</button>
                     <button className="btn btn-accent w-48" onClick={()=>navigate('/inventory')}>View Inventory</button>
                     <button className="btn btn-info w-48" onClick={()=>navigate('/report')}>Generate Report</button>
                 </div>

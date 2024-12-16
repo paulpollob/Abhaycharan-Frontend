@@ -12,6 +12,7 @@ function Navbar() {
                     <ul className="menu menu-horizontal px-1">
                         <li><a onClick={() => navigate('/sale')}>Process Sale</a></li>
                         <li><a onClick={() => navigate('/product')}>Add Product</a></li>
+                        <li><a onClick={() => navigate('/damageProduct')}>Damage Products</a></li>
                         <li><a onClick={() => navigate('/inventory')}>View Inventory</a></li>
                         <li><a onClick={() => navigate('/report')}>Generate Report</a></li>
                     </ul>

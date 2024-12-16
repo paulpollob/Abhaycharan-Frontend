@@ -7,12 +7,16 @@ import Product from "./pages/product";
 import Inventory from "./pages/inventory";
 import Report from "./pages/report";
 import Dashboard from "./pages/dashboard";
+import DamageProduct from "./pages/DamageProduct";
   
 const Router = createBrowserRouter([
 { path: "/", element: <App></App>},
+{ path: "/login", element: <Login></Login>},
+{ path: "/Home", element: <Home></Home>},
 { path: '/dashboard', element: <Dashboard></Dashboard>},
 { path: "/sale", element: <Sale></Sale> },
 { path: "/product", element: <Product></Product> },
+{ path: "/damageProduct", element: <DamageProduct></DamageProduct> },
 { path: "/inventory", element: <Inventory></Inventory> },
 { path: "/report", element: <Report></Report> }
 
