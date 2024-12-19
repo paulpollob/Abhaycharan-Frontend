@@ -1,6 +1,10 @@
 import { useState } from "react"
 import Navbar from "./nabbar"
 import { toast, ToastContainer } from "react-toastify";
+import ReportTab1 from "../components/ReportTab1";
+import ReceiveReportTab from "../components/ReceiveReportTab";
+import SoldReport from "../components/SoldReport";
+import DamagedReport from "../components/DamagedReport";
 
 
 function Report() {
@@ -8,6 +12,7 @@ function Report() {
     const scssMsg = (msg) => toast.success(msg);
     const errMsg = (msg) => toast.error(msg);
     const wrnMsg = (msg) => toast.warn(msg);
+    const [loading, setLoading] = useState(false);
 
 
     const active = "text-white bg-blue-700 rounded-lg   w-full dark:bg-blue-600";
@@ -56,290 +61,65 @@ function Report() {
 
                         </ul>
                         <div className={`relative flex w-full h-full overflow-hidden`}>
-                            <Tab1 wrnMsg={wrnMsg} errMsg={errMsg} scssMsg={scssMsg} tab={tab}></Tab1>
-                            <Tab2 tab={tab}></Tab2>
-                            <Tab3 tab={tab}></Tab3>
-                            <Tab4 tab={tab}></Tab4>
+                            <ReportTab1 setLoading={setLoading} wrnMsg={wrnMsg} errMsg={errMsg} scssMsg={scssMsg} tab={tab}></ReportTab1>
+                            <ReceiveReportTab setLoading={setLoading} wrnMsg={wrnMsg} errMsg={errMsg} scssMsg={scssMsg} tab={tab}></ReceiveReportTab>
+                            <SoldReport setLoading={setLoading} wrnMsg={wrnMsg} errMsg={errMsg} scssMsg={scssMsg} tab={tab}></SoldReport>
+                            <DamagedReport setLoading={setLoading} wrnMsg={wrnMsg} errMsg={errMsg} scssMsg={scssMsg} tab={tab}></DamagedReport>
+                        </div>
+                        {/* <button data-modal-target="default-modal" data-modal-toggle="default-modal" className="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+                            Toggle modal
+                        </button> */}
+                    </div>
+                </div>
+            </div>
+            <Loading loading={loading}></Loading>
+            <ToastContainer />
+
+
+            {/* <!-- Modal toggle --> */}
+
+
+            {/* <!-- Main modal --> */}
+            <div id="default-modal" tabIndex="1" aria-hidden="false" className="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                <div className="relatdive p-4 w-full max-w-2xl max-h-full">
+                    {/* <!-- Modal content --> */}
+                    <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                        {/* <!-- Modal header --> */}
+                        <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                            <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                                Terms of Service
+                            </h3>
+                            <button type="button" className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="default-modal">
+                                <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                                </svg>
+                                <span className="sr-only">Close modal</span>
+                            </button>
+                        </div>
+                        {/* <!-- Modal body --> */}
+                        <div className="p-4 md:p-5 space-y-4">
+                            <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                                With less than a month to go before the European Union enacts new consumer privacy laws for its citizens, companies around the world are updating their terms of service agreements to comply.
+                            </p>
+                            <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                                The European Union’s General Data Protection Regulation (G.D.P.R.) goes into effect on May 25 and is meant to ensure a common set of data rights in the European Union. It requires organizations to notify users as soon as possible of high-risk data breaches that could personally affect them.
+                            </p>
+                        </div>
+                        {/* <!-- Modal footer --> */}
+                        <div className="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+                            <button data-modal-hide="default-modal" type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">I accept</button>
+                            <button data-modal-hide="default-modal" type="button" className="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Decline</button>
                         </div>
                     </div>
                 </div>
             </div>
-            <ToastContainer />
+
         </>
 
     )
-}
+} 
 
-const Tab1 = ({ wrnMsg, scssMsg, errMsg, tab }) => {
-    const [single, setSingle] = useState(true);
-    const [invcAndNtDt, setInvcAndNtDt] = useState(true);
-    const [tableData, setTableData] = useState([])
-    const [formData, setFormData] = useState({
-        invoiceNo: "",
-        invoiceDate: "",
-        fromDate: "",
-        toDate: ""
-    });
-
-
-
-    const invcAndNtDtAction = (flg) => {
-        setFormData({ ...formData, ['invcAndNtDt']: flg })
-        setInvcAndNtDt(flg);
-    }
-    const inputAction = (e) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value })
-    }
-    const searchAction = async () => {
-        let data = {
-            "single": single,
-            "invcAndNtDt": invcAndNtDt
-        }
-        if (single) {
-            if (invcAndNtDt) {
-                if (formData.invoiceNo === "") {
-                    wrnMsg("Enter Invoice No!!!")
-                    return;
-                }
-                data = { ...data, ["invoiceNo"]: formData.invoiceNo }
-            }
-            else {
-                if (formData.invoiceDate === "") {
-                    wrnMsg("Enter invoice Date!!!")
-                    return;
-                }
-                data = { ...data, ["invoiceDate"]: formData.invoiceDate }
-            }
-        }
-        else {
-            if (formData.fromDate === "" || formData.toDate === "") {
-                wrnMsg("Enter start and end date!!!");
-                return;
-            }
-            data = { ...data, ["fromDate"]: formData.fromDate }
-            data = { ...data, ["toDate"]: formData.toDate }
-        }
-
-        const res = await fetch(`${import.meta.env.VITE_HOST_LINK}/api/v1/report/getStockDetails`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        })
-        const tblData = await res.json();
-        setTableData(tblData.stockDetailsDto);
-
-        if (tblData.message === "SUCCESS" && tblData.stockDetailsDto.length === 0) wrnMsg("No items found!!!")
-        else if (tblData.message === "SUCCESS" && tblData.stockDetailsDto.length > 0) scssMsg("Found!!!")
-        else if (tblData.message === "FAILED") errMsg("Failed!!!")
-
-
-        console.log("HK: ", tblData)
-    }
-
-
-    return (
-        <div style={{ transform: `translateX(-${tab * 100}%)` }} className={` transition-transform duration-500 ease-in-out abdsolute s-0  w-1/2 -translate-x-full p-4 min-w-full overflow-hidden bg-gray-50 text-medium text-gray-500 dark:text-gray-400 dark:bg-gray-800 rounded-lg ${(tab == 1) ? ' ' : ' '} `}>
-            <div className="p-0">
-                <div className=" flex flex-col md:flex-row gap-2">
-                    <div className="w-full overflow-hidden">
-                        <div className={` flex transition-all duration-500 rounded-xl p-1  ${(single) ? '-translate-y-0' : '-translate-y-full'} h-full flex w-full border border-slate-800`}>
-                            <div className=" h-0">
-                                <div className="flex border border-gray-600 rounded-xl">
-                                    <div onClick={() => invcAndNtDtAction(true)} className="flex items-center ps-4 rounded dark:border-gray-700">
-                                        <input checked={invcAndNtDt === true} id="invoiceNo" type="radio" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300  dark:bg-gray-700 dark:border-gray-600 cursor-pointer"></input>
-                                        <div className="relative  ">
-                                            <input name="invoiceNo" type="text" onChange={(e) => inputAction(e)} value={`${formData.invoiceNo}`} id="invc" className="block px-2.5 pb-1.5 pt-3 w-full text-sm text-red-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
-                                            <label htmlFor="invc" className="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-3 scale-75 top-1 z-10 origin-[0] px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-1 peer-focus:scale-75 peer-focus:-translate-y-3 start-1 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">Invoice No</label>
-                                        </div>
-                                    </div>
-                                    <div onClick={() => invcAndNtDtAction(false)} className="flex items-center ps-4 rounded dark:border-gray-700">
-                                        <input checked={invcAndNtDt === false} id="date" type="radio" value="" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 dark:bg-gray-700 dark:border-gray-600 cursor-pointer"></input>
-                                        <label htmlFor="date" className="w-full ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                                            <input htmlFor="date" name="invoiceDate" onChange={(e) => inputAction(e)} value={`${formData.invoiceDate}`} type="datetime-local" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full  px-2 py-1  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select invoice date"></input>
-                                        </label>
-                                    </div>
-                                    <button onClick={() => searchAction()} type="submit" className=" p-2.5 text-sm font-medium text-white bg-blue-700 rounded-e-xl ms-2 border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                        <svg className="w-auto h-4" aria-hidden="true" fill="none" viewBox="0 0 20 20">
-                                            <path stroke="currentColor" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
-                                        </svg>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <div className={`transition-all duration-500 rounded-xl p-1  ${(single) ? '-translate-y-0' : '-translate-y-full'} h-full flex w-full border border-slate-800`}>
-                            <div className="flex items-center justify-center">
-                                <div className="ps-1 flex items-center justify-center border border-gray-600 rounded-xl">
-                                    <div className="relative">
-                                        <div className="absolute inset-y-0 start-0 flex items-center ps-2 pointer-events-none">
-                                            <svg className="w-3 h-3 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                                <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
-                                            </svg>
-                                        </div>
-                                        <input name="fromDate" onChange={(e) => inputAction(e)} type="datetime-local" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-8 p-1  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date start"></input>
-                                    </div>
-                                    <span className="mx-2 text-gray-500">to</span>
-                                    <div className="relative">
-                                        <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                                            <svg className="w-3 h-3 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                                <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
-                                            </svg>
-                                        </div>
-                                        <input id="datepicker-range-end" name="toDate" onChange={(e) => inputAction(e)} type="datetime-local" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-8 p-1  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date end"></input>
-                                    </div>
-                                    <button onClick={() => searchAction()} type="submit" className=" p-2.5 text-sm font-medium text-white bg-blue-700 rounded-e-xl ms-2 border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                        <svg className="w-auto h-4" aria-hidden="true" fill="none" viewBox="0 0 20 20">
-                                            <path stroke="currentColor" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
-                                        </svg>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="flex justify-center items-center">
-                        <div className="relative flex items-center justify-center max-w-full rounded-full border border-slate-600">
-                            <label onClick={() => setSingle(!single)} className={`  transition-all duration-100 w-1/2  mx-2 text-center p-1 cursor-pointer`}>Signle</label>
-                            <label onClick={() => setSingle(!single)} className={`  transition-all duration-100 w-1/2 mx-2 text-center cursor-pointer`}>Range</label>
-                            <div className={` transition-all duration-500 w-1/2 ${(single) ? ' -translate-x-1/2 bg-blue-500 bg-opacity-10' : ' translate-x-1/2 bg-blue-500 bg-opacity-10'}  absolute border rounded-full size-full border-slate-600 `}> </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div>
-                <div className="relative overflow-x-auto">
-                    <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                        <thead className="text-xs text-gray-900 uppercase dark:text-gray-400">
-                            <tr>
-                                <th scope="col" className="px-6 py-3">
-                                    Product Code
-                                </th>
-                                <th scope="col" className="px-6 py-3">
-                                    Product Name
-                                </th>
-                                <th scope="col" className="px-6 py-3">
-                                    Detail
-                                </th>
-                                <th scope="col" className="px-6 py-3">
-                                    Type
-                                </th>
-                                <th scope="col" className="px-6 py-3">
-                                    Date
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {
-                                tableData?.map(d =>
-                                    <tr key={d.id} className="bg-white dark:bg-gray-800">
-                                        <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            {d.productCode}
-                                        </th>
-                                        <td className="px-6 py-4">
-                                            {d.productName}
-                                        </td>
-                                        <td className="px-6 py-4 text-end">
-                                            <p className={`${((d.currentStockQty-d.previousStockQty)<0)?'text-red-500':'text-green-500'}`}>{d.previousStockQty}{((d.currentStockQty-d.previousStockQty)<0)?"-":"+"}{Math.abs(d.currentStockQty-d.previousStockQty)}{`=${d.currentStockQty}`}</p>
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            {d.invoiceType}
-                                        </td>
-                                        <td>
-                                            {d.createdDate}
-                                        </td>
-                                    </tr>)
-                            }
-                        </tbody>
-                    </table>
-                </div>
-
-            </div>
-        </div>
-    )
-}
-const Tab2 = ({ tab }) => {
-    return (
-        <div style={{ transform: `translateX(-${tab * 100}%)` }} className={` transition-transform duration-500 ease-in-out abdsolute s-0 w-1/2 -translate-x-full p-6 min-w-full overflow-hidden bg-gray-50 text-medium text-gray-500 dark:text-gray-400 dark:bg-gray-800 rounded-lg ${(tab == 2) ? ' ' : ' '} `}>
-            <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">Dashboard Tab</h3>
-            <p className="mb-2">Nitai.</p>
-        </div>
-    )
-}
-const Tab3 = ({ tab }) => {
-    return (
-        <div style={{ transform: `translateX(-${tab * 100}%)` }} className={` transition-transform duration-500 ease-in-out absoslute s-0 w-1/2 translate-x-full p-6 min-w-full overflow-hidden bg-gray-50 text-medium text-gray-500 dark:text-gray-400 dark:bg-gray-800 rounded-lg ${(tab == 3) ? ' ' : ' '} `}>
-            <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">Setting Tab</h3>
-            <p className="mb-2">Gouranga.</p>
-
-
-            <div className="relative overflow-x-auto">
-                <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                    <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                        <tr>
-                            <th scope="col" className="px-6 py-3">
-                                Product name
-                            </th>
-                            <th scope="col" className="px-6 py-3">
-                                Color
-                            </th>
-                            <th scope="col" className="px-6 py-3">
-                                Category
-                            </th>
-                            <th scope="col" className="px-6 py-3">
-                                Price
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                            <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                Apple MacBook Pro 17"
-                            </th>
-                            <td className="px-6 py-4">
-                                Silver
-                            </td>
-                            <td className="px-6 py-4">
-                                Laptop
-                            </td>
-                            <td className="px-6 py-4">
-                                $2999
-                            </td>
-                        </tr>
-                        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                            <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                Microsoft Surface Pro
-                            </th>
-                            <td className="px-6 py-4">
-                                White
-                            </td>
-                            <td className="px-6 py-4">
-                                Laptop PC
-                            </td>
-                            <td className="px-6 py-4">
-                                $1999
-                            </td>
-                        </tr>
-                        <tr className="bg-white dark:bg-gray-800">
-                            <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                Magic Mouse 2
-                            </th>
-                            <td className="px-6 py-4">
-                                Black
-                            </td>
-                            <td className="px-6 py-4">
-                                Accessories
-                            </td>
-                            <td className="px-6 py-4">
-                                $99
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-        </div>
-    )
-}
+ 
 const Tab4 = ({ tab }) => {
     return (
         <div style={{ transform: `translateX(-${tab * 100}%)` }} className={` transition-transform duration-500 ease-in-out absoslute s-0 w-1/2 translate-x-full p-6 min-w-full overflow-hidden bg-gray-50 text-medium text-gray-500 dark:text-gray-400 dark:bg-gray-800 rounded-lg ${(tab == 3) ? ' ' : ' '} `}>
@@ -423,7 +203,25 @@ const Tab4 = ({ tab }) => {
                     </tbody>
                 </table>
             </div>
+            <Loading></Loading>
+        </div>
+    )
+}
 
+
+
+const Loading = ({ loading }) => {
+    return (
+        <div>
+            {
+                loading &&
+                <div role="status" className="absolute h-screen w-screen top-0 left-0 flex justify-center items-center">
+                    <div className="bg-blue-500 w-56 h-40 rounded-xl bg-opacity-70 flex justify-center items-center">
+                        <svg aria-hidden="true" className="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-gray-900" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor" /><path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill" /></svg>
+                        <span className="sr-only">Loading...</span>
+                    </div>
+                </div>
+            }
         </div>
     )
 }

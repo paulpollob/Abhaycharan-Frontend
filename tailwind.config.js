@@ -1,13 +1,12 @@
 /** @type {import('tailwindcss').Config} */
 // const flowbite = require("flowbite-react/tailwind");
 // import { flowbite } from 'flowbite-react';
-import daisyui from 'daisyui';
-import { Flowbite } from 'flowbite-react';
-import { content } from 'flowbite-react/tailwind'; 
+import daisyui from 'daisyui'; 
 module.exports = {
   content: [
     "./src/**/*.{js,jsx,ts,tsx}",
-    content
+    // "./node_modules/flowbite/**/*.js"
+ 
   ],
   theme: {
     extend: {},
@@ -15,5 +14,6 @@ module.exports = {
   plugins: [
     daisyui,
     // Flowbite.plugin(),
+    // import {Flowbite} from 'flowbite-react'
   ],
 }

@@ -1,0 +1,32 @@
+{ 
+    "territoryCode": "string",
+    "territoryName": "string",
+    "tsoCode": "string",
+    "tsoName": "string",
+    "tsoContactNo": "string",
+    "customerCode": "string",
+    "customerName": "string",
+    "dbLocation": "string",
+    "custContactPerson": "string",
+    "customerContactNo": "string",
+    "distributorId": 0,
+    "marketCode": "string",
+    "amount": 0,  
+    "factoryCode": "string",
+    "replacementProdDtls": [
+        {
+            "productCode": "string",
+            "productName": "string",
+            "productQty": 0,
+            "packSize": "string",
+            "replacementQty": 0,
+            "tradePrice": 0,
+            "totalValue": 0,
+            "remarks": "string",
+            "enteredBy": "string",
+            "enteredDate": "2024-12-17T07:17:12.024Z",
+            "enteredTerminal": "string", 
+            "mrp": 0
+        }
+    ]
+}

@@ -2,12 +2,13 @@ import { createBrowserRouter } from "react-router-dom";
 import Login from "./pages/login";
 import Home from "./pages/home";
 import App from "./App";
-import Sale from "./pages/sales";
-import Product from "./pages/product";
+import Sale from "./pages/sales"; 
 import Inventory from "./pages/inventory";
 import Report from "./pages/report";
 import Dashboard from "./pages/dashboard";
 import DamageProduct from "./pages/DamageProduct";
+import ReceiveProduct from "./pages/ReceiveProduct";
+import ProductInfo from "./pages/ProductInfo";
   
 const Router = createBrowserRouter([
 { path: "/", element: <App></App>},
@@ -15,10 +16,11 @@ const Router = createBrowserRouter([
 { path: "/Home", element: <Home></Home>},
 { path: '/dashboard', element: <Dashboard></Dashboard>},
 { path: "/sale", element: <Sale></Sale> },
-{ path: "/product", element: <Product></Product> },
+{ path: "/receiveProduct", element: <ReceiveProduct></ReceiveProduct> },
 { path: "/damageProduct", element: <DamageProduct></DamageProduct> },
 { path: "/inventory", element: <Inventory></Inventory> },
-{ path: "/report", element: <Report></Report> }
+{ path: "/report", element: <Report></Report> },
+{ path: "/productInfo", element: <ProductInfo></ProductInfo> }
 
 // {
 //     path: "/dashboard",

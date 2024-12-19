@@ -44,8 +44,8 @@ const DamageProduct = () => {
     const addProduct = (e) => {
         e.preventDefault();
         if (formData.productCode && formData.productName && formData.damageQty && formData.tradePrice) {
-            const check = items.find(d=>d.productCode===formData.productCode)
-            if(check!=null){
+            const check = items.find(d => d.productCode === formData.productCode)
+            if (check != null) {
                 wrnMsg("Product Already Added!!!")
                 return;
             }
@@ -147,27 +147,6 @@ const DamageProduct = () => {
                     <div>
                         <h1 className="text-4xl font-bold text-center mb-8"> Damaged Products</h1>
 
-                        {/* <form className="max-w-3xl mx-auto">
-                            <label className=" input input-bordered focus:border-0 ">{`${distributorInfo?.invoiceNo ? distributorInfo?.invoiceNo : "Invoice No."}`}</label>
-                            <div className="grid grid-cols-2 gap-x-2 gap-y-0">
-                                <div className="mb-5">
-                                    <label htmlFor="storeName" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Store Name</label>
-                                    <input name="storeName" onChange={handleDstChange} placeholder="store Name" type="text" id="storeName" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
-                                </div>
-                                <div className="mb-5">
-                                    <label htmlFor="distributorName" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Distributor Name</label>
-                                    <input name="distributorName" onChange={handleDstChange} placeholder="distributor Name" type="text" id="distributorName" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
-                                </div>
-                                <div className="mb-5">
-                                    <label htmlFor="distributorAddress" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Distributor Address</label>
-                                    <input name="distributorAddress" onChange={handleDstChange} placeholder="distributor Address" type="text" id="distributorAddress" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
-                                </div>
-                                <div className="mb-5">
-                                    <label htmlFor="distributorPhone" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Distributor Contact Number</label>
-                                    <input name="distributorPhone" onChange={handleDstChange} placeholder="distributor Number" type="text" id="distributorPhone" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
-                                </div>
-                            </div>
-                        </form> */}
 
                     </div>
                     <div className="flex min-h-screen  ">

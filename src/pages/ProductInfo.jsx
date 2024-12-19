@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
-import Navbar from "./nabbar"
+import Navbar from "./nabbar";
 import { toast, ToastContainer } from "react-toastify";
 
- 
+// /api/v1/products/addProduct/
 
-
-const Inventory = () => {
+const ProductInfo = () => {
     const [allProducts, setAllProducts] = useState([])
-    const [showDropdown, setShowDropdown] = useState(false); 
+    const [showDropdown, setShowDropdown] = useState(false);
+    const [addNew, setAddNew] = useState(true);
     const [loading, setLoading] = useState(false)
     const [flg, setFlg] = useState(false);
     const [filteredSuggestions, setFilteredSuggestions] = useState([]);
@@ -34,23 +34,29 @@ const Inventory = () => {
 
 
     const inputFieldOnBlur = () => setTimeout(() => setShowDropdown(false), 500)
-    const searchAction = async () => { 
-        
-        console.log("HK: code: ", formData)
-        if (formData.productCode==="") {
-            wrnMsg("Please enter product code!!!");
+    const saveProductAction = async () => { 
+        if (formData.mrp == "" || formData.tradePrice == "" || formData.packSize == "" || formData.productName == "") {
+            wrnMsg("Please enter all field!!!");
             return;
         }
         try {
-            setLoading(true) 
-            console.log("HK: code: ", formData.pro)
-            const res = await fetch(`${import.meta.env.VITE_HOST_LINK}/api/v1/stock/getStock/${formData.productCode}`,) 
-            const resData = await res.json(); 
-            const data = {...resData, ['productName']:formData?.productName, ['packSize']:formData.packSize} 
-            setFormData(data.stockDto)
+            setLoading(true)
+            let api = "";
+            if(formData.productCode==="") api = `${import.meta.env.VITE_HOST_LINK}/api/v1/products/addProduct/`
+            else api = `${import.meta.env.VITE_HOST_LINK}/api/v1/products/updateProduct/`
+            const res = await fetch(api,
+                {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                }
+            ) 
+            const data = await res.json(); 
+            setFormData(data.productInfoDto)
             setFlg(!flg)
 
-            setLoading(false) 
+            setLoading(false)
+            setAddNew(false)
             if (data.message == "SUCCESS") scssMsg("Save Successfull!!!")
             else errMsg("Failed!!!")
 
@@ -65,8 +71,24 @@ const Inventory = () => {
     const errMsg = (msg) => toast.error(msg);
     const wrnMsg = (msg) => toast.warn(msg);
     const searchOnFocusAction = () => {
-        setShowDropdown(true) 
-    } 
+        setShowDropdown(true)
+        setAddNew(false);
+    }
+    const addNewAction = () => {
+        setAddNew(true)
+        setSearchTerm("")
+        setFilteredSuggestions([])
+        setFormData({ productCode: "", productName: "", packSize: "", tradePrice: "", mrp: "" });
+    }
+    const updateAction = () => {
+        if (formData.productCode === "") {
+            errMsg("please select product first!!!")
+            return;
+        }
+        setAddNew(true)
+        setSearchTerm("")
+        setFilteredSuggestions([]) 
+    }
     const filterSearchOnType = (event) => {
         const value = event.target.value;
         setSearchTerm(value);
@@ -112,7 +134,8 @@ const Inventory = () => {
                                 placeholder="Search..."
                             />
                         </div>
-                        <button onClick={() => searchAction()} className="btn btn-primary">Search</button> 
+                        <button onClick={() => addNewAction()} className="btn btn-primary">Add new</button>
+                        <button onClick={() => updateAction()} className="btn btn-primary">Update</button>
                     </div>
                     <div className={`rounded absolute ${showDropdown && 'h-full'} w-1/4 p-5`}>
                         <div className="">
@@ -147,6 +170,7 @@ const Inventory = () => {
                                 className="input input-bordered"
                                 disabled
                                 value={formData?.productCode}
+                                onChange={inputAction}
                                 required
                             />
                         </div>
@@ -161,7 +185,7 @@ const Inventory = () => {
                                 placeholder="Product Name"
                                 className="input input-bordered"
                                 value={formData?.productName}
-                                disabled
+                                onChange={inputAction}
                                 required
                             />
 
@@ -177,7 +201,7 @@ const Inventory = () => {
                                 placeholder="Pack Size"
                                 className="input input-bordered"
                                 value={formData?.packSize}
-                                disabled
+                                onChange={inputAction}
                                 required
                             />
 
@@ -192,7 +216,7 @@ const Inventory = () => {
                                 placeholder="tradePrice"
                                 className="input input-bordered"
                                 value={formData?.tradePrice}
-                                disabled
+                                onChange={inputAction}
                                 required
                             />
                         </div>
@@ -206,44 +230,26 @@ const Inventory = () => {
                                 placeholder="mrp"
                                 className="input input-bordered"
                                 value={formData?.mrp}
-                                disabled
+                                onChange={inputAction}
                                 required
                             />
-                        </div> 
-                        <div className="form-control mb-4">
-                            <label className="label">
-                                <span className="label-text">Previous Quantity</span>
-                            </label>
-                            <input
-                                type="number"
-                                name="previousQty"
-                                placeholder="previousQty"
-                                className="input input-bordered"
-                                value={formData?.previousQty} 
-                                disabled
-                                required
-                            />
-                        </div> 
-                        <div className="form-control mb-4">
-                            <label className="label">
-                                <span className="label-text">Current Quantity</span>
-                            </label>
-                            <input
-                                type="number"
-                                name="currentQty"
-                                placeholder="currentQty"
-                                className="input input-bordered"
-                                value={formData?.currentQty} 
-                                disabled
-                                required
-                            />
-                        </div> 
-                        {/* {
+                        </div>
+                        <div className="form-control">
+                            <div>
+                                <label className="label">
+                                    <span className="label-text">Click to Save</span>
+                                </label>
+                                <button onClick={() => saveProductAction()} type="submit" className="btn btn-primary w-full">
+                                    Save Product
+                                </button>
+                            </div>
+                        </div>
+                        {
                             (!addNew) &&
                             <div className="absolute bg-slate-600 bg-opacity-10 w-full h-full rounded p-2">
                                 <h1 className="text-red-800">view mode</h1>
                             </div>
-                        } */}
+                        }
                     </div>
                 </div>
             </div>
@@ -261,5 +267,4 @@ const Inventory = () => {
         </div>
     )
 }
-
-export default Inventory
+export default ProductInfo;

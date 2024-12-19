@@ -4,6 +4,7 @@ import { Bounce, toast, ToastContainer } from "react-toastify";
 
 function Sale() {
 
+    const [render, setRender] = useState(1)
     const [allProducts, setAllProducts] = useState([]);
     const [searchTerm, setSearchTerm] = useState("")
     const [customerInfo, setCustomerInfo] = useState({})
@@ -11,10 +12,10 @@ function Sale() {
     const [loading, setLoading] = useState(false);
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [showDropdown, setShowDropdown] = useState(false);
-    const [filteredSuggestions, setFilteredSuggestions] = useState([]);
-    const notify = (msg) => toast(msg);
+    const [filteredSuggestions, setFilteredSuggestions] = useState([]); 
 
     useEffect(() => {
+        setRender(render+1);
         return () => {
             fetch(`${import.meta.env.VITE_HOST_LINK}/api/v1/products/findAllProduct/`)
                 .then(response => response.json())
@@ -22,7 +23,13 @@ function Sale() {
         };
     }, [])
 
+
+
+    const scssMsg = (msg) => toast.success(msg);
+    const errMsg = (msg) => toast.error(msg);
+    const wrnMsg = (msg) => toast.warn(msg);
     const [items, setItems] = useState([]);
+    // setSearchTerm("");
     const [formData, setFormData] = useState({
         productCode: "",
         productName: "",
@@ -59,8 +66,7 @@ function Sale() {
     };
 
     const handleOpenPopup = async () => {
-        // setIsPopupOpen(true);
-        notify("HK")
+        // setIsPopupOpen(true); 
 
         setConfirm(false)
         setLoading(true);
@@ -78,36 +84,24 @@ function Sale() {
             const data = await res.json();
 
             if (data.message != "SUCCESS") {
-                notify("Error!");
+                errMsg(data.message);
             }
             setCustomerInfo({ ...customerInfo, "invoiceNo": data?.rcvDto?.invoiceNo })
 
 
             setIsPopupOpen(true);
-            notify("Successfully saved!!!");
+            if(data.message=="SUCCESS") scssMsg("Successfully saved!!!");
             setLoading(false);
         } catch (error) {
             setLoading(false);
+            errMsg("Failed!!")
             console.log("error: ", error)
         }
     };
 
     const handleClosePopup = () => {
         setIsPopupOpen(false);
-    };
-    // const selectProductHandle = (e) => {
-    //     const options = e.target.options
-    //     const indx = options.selectedIndex
-    //     const code = options[indx].value
-
-    //     const data = allProducts.find(t => t.productCode == code)
-    //     setFormData(
-    //         {
-    //             code: data.productCode,
-    //             name: data.productName,
-    //             price: data.mrp
-    //         })
-    // }
+    }; 
 
     const handleSuggestionClick = (suggestion) => {
         setSearchTerm(suggestion.productCode + " | " + suggestion.productName); // Set the clicked suggestion in the input
@@ -203,6 +197,7 @@ function Sale() {
                     </div>
                 </div>
             )}
+            <>render nmbwer{`${render}`}</>
 
 
             <div className="bg-base-200">
@@ -397,7 +392,7 @@ function Sale() {
                 </div>
             }
             {/* <ToastContainer /> */}
-            <ToastContainer
+            {/* <ToastContainer
                 position="top-right"
                 autoClose={5000}
                 hideProgressBar={false}
@@ -409,34 +404,17 @@ function Sale() {
                 pauseOnHover
                 theme="dark"
                 transition={Bounce}
-            />
+            /> */}
+            <ToastContainer />
+
             {
                 confirm &&
-                <div className="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-                    {/* <!--
-    Background backdrop, show/hide based on modal state.
-
-    Entering: "ease-out duration-300"
-      From: "opacity-0"
-      To: "opacity-100"
-    Leaving: "ease-in duration-200"
-      From: "opacity-100"
-      To: "opacity-0"
-  --> */}
+                <div className="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true"> 
                     <div className="fixed inset-0 bg-gray-500/75 transition-opacity" aria-hidden="false"></div>
 
                     <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
                         <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-                            {/* <!--
-        Modal panel, show/hide based on modal state.
-
-        Entering: "ease-out duration-300"
-          From: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-          To: "opacity-100 translate-y-0 sm:scale-100"
-        Leaving: "ease-in duration-200"
-          From: "opacity-100 translate-y-0 sm:scale-100"
-          To: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-      --> */}
+                          
                             <div className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
                                 <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
                                     <div className="sm:flex sm:items-start">

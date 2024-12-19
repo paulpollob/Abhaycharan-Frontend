@@ -4,7 +4,7 @@ import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
 
-function Product() {
+function ReceiveProduct() {
 
 
     useEffect(() => {
@@ -448,8 +448,9 @@ function Product() {
             }
 
             <ToastContainer />
+            
         </div>
     )
 }
 
-export default Product
+export default ReceiveProduct
