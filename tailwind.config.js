@@ -2,9 +2,9 @@
 // const flowbite = require("flowbite-react/tailwind");
 // import { flowbite } from 'flowbite-react';
 import daisyui from 'daisyui'; 
-module.exports = {
+export default {
   content: [
-    "./src/**/*.{js,jsx,ts,tsx}",
+    "./src/**/*.{js,jsx,ts,tsx}", './public/index.html'
     // "./node_modules/flowbite/**/*.js"
  
   ],
