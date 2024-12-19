@@ -21,12 +21,10 @@ const DamageProduct = () => {
         mrp: ""
     });
 
-    useEffect(() => {
-        return () => {
+    useEffect(() => { 
             fetch(`${import.meta.env.VITE_HOST_LINK}/api/v1/products/findAllProduct/`)
                 .then(response => response.json())
-                .then(data => setAllProducts(data?.productInfoDtos));
-        };
+                .then(data => setAllProducts(data?.productInfoDtos)); 
     }, [])
 
 

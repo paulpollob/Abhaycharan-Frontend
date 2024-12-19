@@ -3,8 +3,7 @@ import Navbar from "./nabbar";
 import { Bounce, toast, ToastContainer } from "react-toastify";
 
 function Sale() {
-
-    const [render, setRender] = useState(1)
+ 
     const [allProducts, setAllProducts] = useState([]);
     const [searchTerm, setSearchTerm] = useState("")
     const [customerInfo, setCustomerInfo] = useState({})
@@ -14,13 +13,10 @@ function Sale() {
     const [showDropdown, setShowDropdown] = useState(false);
     const [filteredSuggestions, setFilteredSuggestions] = useState([]); 
 
-    useEffect(() => {
-        setRender(render+1);
-        return () => {
+    useEffect(() => { 
             fetch(`${import.meta.env.VITE_HOST_LINK}/api/v1/products/findAllProduct/`)
                 .then(response => response.json())
-                .then(data => setAllProducts(data?.productInfoDtos));
-        };
+                .then(data => setAllProducts(data?.productInfoDtos)); 
     }, [])
 
 
@@ -196,8 +192,7 @@ function Sale() {
                         </div>
                     </div>
                 </div>
-            )}
-            <>render nmbwer{`${render}`}</>
+            )} 
 
 
             <div className="bg-base-200">

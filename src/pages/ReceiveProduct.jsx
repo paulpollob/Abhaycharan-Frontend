@@ -7,12 +7,10 @@ import 'react-toastify/dist/ReactToastify.css';
 function ReceiveProduct() {
 
 
-    useEffect(() => {
-        return () => {
+    useEffect(() => { 
             fetch(`${import.meta.env.VITE_HOST_LINK}/api/v1/products/findAllProduct/`)
                 .then(response => response.json())
-                .then(data => setAllProducts(data?.productInfoDtos));
-        };
+                .then(data => setAllProducts(data?.productInfoDtos)); 
     }, [])
 
     const [searchTerm, setSearchTerm] = useState("");
