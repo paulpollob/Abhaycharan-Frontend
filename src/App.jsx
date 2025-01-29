@@ -1,12 +1,13 @@
-import { Outlet } from 'react-router-dom'
+// import { Outlet } from 'react-router-dom'
+// import * as React from 'react'
 import './App.css'
-import Login from './pages/login'
+// import Login from './pages/login'
+import { RouterProvider } from 'react-router-dom'
+import Router from './router'
 
 function App() {
 	return (
-		<>
-			<Login></Login>
-		</>
+		<RouterProvider router={Router} />
 	)
 }
 

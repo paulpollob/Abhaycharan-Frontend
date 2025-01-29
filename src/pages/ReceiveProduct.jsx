@@ -1,25 +1,19 @@
-import { useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import Navbar from "./nabbar"
-import { toast, ToastContainer } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import { MyContext } from "../Context";
 
 
 function ReceiveProduct() {
-
-
-    useEffect(() => { 
-            fetch(`${import.meta.env.VITE_HOST_LINK}/api/v1/products/findAllProduct/`)
-                .then(response => response.json())
-                .then(data => setAllProducts(data?.productInfoDtos)); 
-    }, [])
 
     const [searchTerm, setSearchTerm] = useState("");
     const [filteredSuggestions, setFilteredSuggestions] = useState([]);
     const [showDropdown, setShowDropdown] = useState(false);
     const [distributorInfo, setDistributorInfo] = useState({});
     const [isPopupOpen, setIsPopupOpen] = useState(false);
-    const [loading, setLoading] = useState(false)
-    const [allProducts, setAllProducts] = useState([]);
+    const [loading, setLoading] = useState(false) 
+    const {allProducts, scssMsg, errMsg, wrnMsg} = useContext(MyContext);
     const [confirm, setConfirm] = useState(false);
     const [items, setItems] = useState([]);
     const [formData, setFormData] = useState({
@@ -32,10 +26,6 @@ function ReceiveProduct() {
     });
 
 
-
-    const scssMsg = (msg) => toast.success(msg);
-    const errMsg = (msg) => toast.error(msg);
-    const wrnMsg = (msg) => toast.warn(msg);
 
 
 

@@ -1,7 +1,13 @@
-import { useState } from "react";
-
+import { useContext, useState } from "react";
+import CreatableSelect from "react-select/creatable";
+import { MyContext } from "../Context";
+/* eslint-disable react/prop-types */
 const ReportTab1 = ({ setLoading, wrnMsg, scssMsg, errMsg, tab }) => {
+
+
+    const { allProducts, category, setCategory, flg, setFlg } = useContext(MyContext);
     const [single, setSingle] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
     const [invcAndNtDt, setInvcAndNtDt] = useState(true);
     const [tableData, setTableData] = useState([])
     const [formData, setFormData] = useState({
@@ -13,6 +19,17 @@ const ReportTab1 = ({ setLoading, wrnMsg, scssMsg, errMsg, tab }) => {
 
 
 
+
+    const handleCreate = (inputValue) => {
+        setIsLoading(true);
+        
+        setFormData({ ...formData, ['productCategory']: inputValue });
+        setTimeout(() => {
+            const newOption = createOption(inputValue);
+            setIsLoading(false);
+            setCategory((prev) => [...prev, newOption]); 
+        }, 1000);
+    };
     const invcAndNtDtAction = (flg) => {
         setFormData({ ...formData, ['invcAndNtDt']: flg })
         setInvcAndNtDt(flg);
@@ -84,10 +101,10 @@ const ReportTab1 = ({ setLoading, wrnMsg, scssMsg, errMsg, tab }) => {
 
 
     return (
-        <div style={{ transform: `translateX(-${tab * 100}%)` }} className={` transition-transform duration-500 ease-in-out abdsolute s-0  w-1/2 -translate-x-full p-4 min-w-full overflow-hidden bg-gray-50 text-medium text-gray-500 dark:text-gray-400 dark:bg-gray-800 rounded-lg ${(tab == 1) ? ' ' : ' '} `}>
-            <div className="p-0">
-                <div className=" flex flex-col md:flex-row gap-2">
-                    <div className="w-full overflow-hidden">
+        <div style={{ transform: `translateX(-${tab * 100}%)` }} className={`  transition-transform duration-500 ease-in-out abdsolute s-0  w-1/2 -translate-x-full p-4 min-w-full min-h-fit  bg-gray-50 text-medium text-gray-500 dark:text-gray-400 dark:bg-gray-800 rounded-lg ${(tab == 1) ? ' ' : ' '} `}>
+            <div className="p-0 ">
+                <div className=" flex flex-col justify-between md:flex-row gap-2">
+                    <div className="w-auto overflow-hidden">
                         <div className={` flex transition-all duration-500 rounded-xl p-1  ${(single) ? '-translate-y-0' : '-translate-y-full'} h-full flex w-full border border-slate-800`}>
                             <div className=" h-0">
                                 <div className="flex border border-gray-600 rounded-xl">
@@ -140,6 +157,41 @@ const ReportTab1 = ({ setLoading, wrnMsg, scssMsg, errMsg, tab }) => {
                                 </div>
                             </div>
                         </div>
+                    </div>
+
+                    <div className="relative p-1 h-full w-1/3 flex justify-center items-center border bg-slate- rounded-xl border-slate-700">
+                        <CreatableSelect styles={{
+                            control: (baseStyles, state) => ({
+                                display: "flex ",
+                                justifyContent: "center",
+                                alighItem: "center",
+                                minHeight: "100%",
+                                width: "100%",
+                                top: "0",
+                                color: "white",
+                                backgroundColor: `#334155 ${state.isDisabled && '#334155'}`
+                            }),
+                            
+                            menu: (baseStyles) => (
+                                {
+                                    ...baseStyles,
+                                    minHeight: "100%", 
+                                    overflow: "auto",
+                                    position: "absolute"
+                                }
+                            ), 
+                            
+                        }}
+                        className="  w-full h-full "
+                        name="productCategory"
+                        isClearable
+                        isDisabled={isLoading}
+                        isLoading={isLoading}
+                        onChange={(newValue) => setFormData({ ...formData, ['productCategory']: newValue.value })}
+                        onCreateOption={handleCreate}
+                        options={category}
+                        value={formData.productCategory}
+                        />
                     </div>
 
                     <div className="flex justify-center items-center">

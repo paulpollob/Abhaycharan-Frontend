@@ -327,7 +327,7 @@ const ReceiveReportTab = ({ setLoading, wrnMsg, scssMsg, errMsg, tab }) => {
                                                     {d.mrp}
                                                 </td>
                                                 <td className="px-6 py-4">
-                                                    <p1 className="text-2xl">৳</p1>{d.tradePrice * d.productReceivedQty}
+                                                    <p className="text-2xl">৳</p>{d.tradePrice * d.productReceivedQty}
                                                 </td>
                                             </tr>
                                         )
@@ -352,12 +352,12 @@ const ReceiveReportTab = ({ setLoading, wrnMsg, scssMsg, errMsg, tab }) => {
                                             <p>Total: </p>
                                         </td>
                                         <td className="px-6 py-4">
-                                            <p1 className="text-2xl">৳</p1>
-                                            <p1 className="text-xl">
+                                            <p className="text-2xl">৳</p>
+                                            <p className="text-xl">
                                                 {
                                                     (subTableData?.productsDetails?.map(d => d.tradePrice * d.productReceivedQty))?.reduce((a, b) => a + b, 0)
                                                 }
-                                            </p1>
+                                            </p>
                                         </td>
                                     </tr>
                                 </tbody>

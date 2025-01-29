@@ -1,8 +1,10 @@
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import Modal from "./Modal";
 import { useRef, useState } from "react";
+import CreatableSelect from "react-select/creatable";
+/* eslint-disable react/prop-types */
 
-const SoldReport = ({ setLoading, wrnMsg, scssMsg, errMsg, tab }) =>{
+const SoldReport = ({ setLoading, wrnMsg, scssMsg, errMsg, tab }) => {
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [single, setSingle] = useState(true);
     const [invcAndNtDt, setInvcAndNtDt] = useState(true);
@@ -172,6 +174,38 @@ const SoldReport = ({ setLoading, wrnMsg, scssMsg, errMsg, tab }) =>{
                         </div>
                     </div>
 
+                    <div>
+                        <CreatableSelect styles={{
+                            control: (baseStyles, state) => ({
+                                display: "flex ",
+                                justifyContent: "center",
+                                alighItem: "center",
+                                height: "100%",
+                                width: "100%",
+                                top: "0",
+                                color: "white",
+                                backgroundColor: `#334155 ${state.isDisabled && '#334155'}`
+                            }),
+                            menu: (baseStyles) => (
+                                {
+                                    ...baseStyles,
+                                    backgroundColor: `#334155`,
+                                    color: "white"
+                                }
+                            )
+                        }}
+                            className="  w-full h-full "
+                            name="productCategory"
+                            isClearable
+                            // isDisabled={isLoading}
+                            // isLoading={isLoading}
+                            onChange={(newValue) => setFormData({ ...formData, ['productCategory']: newValue.value })}
+                            // onCreateOption={handleCreate}
+                            // options={category}
+                            value={formData.productCategory}
+                        />
+                    </div>
+
                     <div className="flex justify-center items-center">
                         <div className="relative flex items-center justify-center max-w-full rounded-full border border-slate-600">
                             <label onClick={() => setSingle(!single)} className={`  transition-all duration-100 w-1/2  mx-2 text-center p-1 cursor-pointer`}>Signle</label>
@@ -192,7 +226,7 @@ const SoldReport = ({ setLoading, wrnMsg, scssMsg, errMsg, tab }) =>{
                             <tr>
                                 <th scope="col" className="px-6 py-3">
                                     Selling No.
-                                </th> 
+                                </th>
                                 <th scope="col" className="px-6 py-3">
                                     <div className="flex items-center">
                                         Customer Name.
@@ -228,8 +262,8 @@ const SoldReport = ({ setLoading, wrnMsg, scssMsg, errMsg, tab }) =>{
                                 tableData?.map(d =>
                                     <tr key={d.invoiceNo} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                         <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        <p onClick={()=>copy(d?.sellId)} title={d?.sellId}  className="w-28 overflow-x-clip">{d?.sellId}</p>
-                                        </th> 
+                                            <p onClick={() => copy(d?.sellId)} title={d?.sellId} className="w-28 overflow-x-clip">{d?.sellId}</p>
+                                        </th>
                                         <td className="px-6 py-4">
                                             {d?.customerName}
                                         </td>
@@ -246,18 +280,18 @@ const SoldReport = ({ setLoading, wrnMsg, scssMsg, errMsg, tab }) =>{
                                 )
                             }
                         </tbody>
-                    </table> 
+                    </table>
                 </div>
             </div>
 
- 
+
             <Modal isOpen={isModalOpen} onClose={onCloseModal}>
                 <Modal.CloseButton>
                     <IoIosCloseCircleOutline size={23} />
                 </Modal.CloseButton>
                 <div ref={printContents}>
                     <Modal.Header>
-                        <div className=" w-full flex flex-col justify-center items-center"> 
+                        <div className=" w-full flex flex-col justify-center items-center">
                             <p><b>Customer Name:</b> {subTableData?.customerName} <b>Mob:</b> {subTableData?.customerPhoneNumber}</p>
                             <span><b>Address: </b>{subTableData?.customerAddress}</span>
                             <hr className="bg w-full"></hr>
@@ -273,10 +307,10 @@ const SoldReport = ({ setLoading, wrnMsg, scssMsg, errMsg, tab }) =>{
                                         </th>
                                         <th scope="col" className="px-6 py-3">
                                             Product Name
-                                        </th> 
+                                        </th>
                                         <th scope="col" className="px-6 py-3">
                                             Selling Qty
-                                        </th> 
+                                        </th>
                                         <th scope="col" className="px-6 py-3">
                                             Mrp
                                         </th>
@@ -295,15 +329,15 @@ const SoldReport = ({ setLoading, wrnMsg, scssMsg, errMsg, tab }) =>{
                                                 </th>
                                                 <td className="px-6 py-4">
                                                     {d.productName}
-                                                </td> 
+                                                </td>
                                                 <td className="px-6 py-4">
                                                     {d.sellingQty}
-                                                </td> 
+                                                </td>
                                                 <td className="px-6 py-4">
                                                     {d.mrp}
                                                 </td>
                                                 <td className="px-6 py-4">
-                                                    <p1 className="text-2xl">৳</p1>{d.mrp * d.sellingQty}
+                                                    <p className="text-2xl">৳</p>{d.mrp * d.sellingQty}
                                                 </td>
                                             </tr>
                                         )
@@ -317,17 +351,17 @@ const SoldReport = ({ setLoading, wrnMsg, scssMsg, errMsg, tab }) =>{
                                         </td>
                                         <td className="px-6 py-4">
 
-                                        </td> 
+                                        </td>
                                         <td className="px-6 py-4">
                                             <p>Total: </p>
                                         </td>
                                         <td className="px-6 py-4">
-                                            <p1 className="text-2xl">৳</p1>
-                                            <p1 className="text-xl">
+                                            <p className="text-2xl">৳</p>
+                                            <p className="text-xl">
                                                 {
                                                     (subTableData?.productInfo?.map(d => d.mrp * d.sellingQty))?.reduce((a, b) => a + b, 0)
                                                 }
-                                            </p1>
+                                            </p>
                                         </td>
                                     </tr>
                                 </tbody>

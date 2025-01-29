@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import Navbar from "./nabbar";
-import { Bounce, toast, ToastContainer } from "react-toastify";
+import { ToastContainer } from "react-toastify";
+import { MyContext } from "../Context";
 
 function Sale() {
- 
-    const [allProducts, setAllProducts] = useState([]);
+
     const [searchTerm, setSearchTerm] = useState("")
     const [customerInfo, setCustomerInfo] = useState({})
     const [confirm, setConfirm] = useState(false);
@@ -13,17 +13,10 @@ function Sale() {
     const [showDropdown, setShowDropdown] = useState(false);
     const [filteredSuggestions, setFilteredSuggestions] = useState([]); 
 
-    useEffect(() => { 
-            fetch(`${import.meta.env.VITE_HOST_LINK}/api/v1/products/findAllProduct/`)
-                .then(response => response.json())
-                .then(data => setAllProducts(data?.productInfoDtos)); 
-    }, [])
+    const {allProducts, scssMsg, errMsg, wrnMsg} = useContext(MyContext);
 
 
 
-    const scssMsg = (msg) => toast.success(msg);
-    const errMsg = (msg) => toast.error(msg);
-    const wrnMsg = (msg) => toast.warn(msg);
     const [items, setItems] = useState([]);
     // setSearchTerm("");
     const [formData, setFormData] = useState({
@@ -47,7 +40,7 @@ function Sale() {
             setItems([...items, { ...formData }]);
             setFormData({ productCode: "", productName: "", sellingQty: "", mrp: "" }); // Reset form fields
         } else {
-            alert("Please fill out all fields.");
+            wrnMsg("Please fill out all fields.");
         }
     };
 

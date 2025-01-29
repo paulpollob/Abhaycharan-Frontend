@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react"
+import { useContext, useState } from "react"
 import Navbar from "./nabbar"
-import { toast, ToastContainer } from "react-toastify"
+import { ToastContainer } from "react-toastify"
+import { MyContext } from "../Context"
 
 const DamageProduct = () => {
 
@@ -8,10 +9,10 @@ const DamageProduct = () => {
     const [confirm, setConfirm] = useState(false)
     const [searchTerm, setSearchTerm] = useState("");
     const [showDropdown, setShowDropdown] = useState(false);
-    const [filteredSuggestions, setFilteredSuggestions] = useState([]);
-    const [allProducts, setAllProducts] = useState([]);
+    const [filteredSuggestions, setFilteredSuggestions] = useState([]); 
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [loading, setLoading] = useState(false);
+    const {allProducts, scssMsg, errMsg, wrnMsg} = useContext(MyContext);
     const [formData, setFormData] = useState({
         productCode: "",
         productName: "",
@@ -21,17 +22,8 @@ const DamageProduct = () => {
         mrp: ""
     });
 
-    useEffect(() => { 
-            fetch(`${import.meta.env.VITE_HOST_LINK}/api/v1/products/findAllProduct/`)
-                .then(response => response.json())
-                .then(data => setAllProducts(data?.productInfoDtos)); 
-    }, [])
 
 
-
-    const scssMsg = (msg) => toast.success(msg);
-    const errMsg = (msg) => toast.error(msg);
-    const wrnMsg = (msg) => toast.warn(msg);
     const removeItem = (e) => {
         const productCode = e.target.parentNode.parentNode.children[1].innerHTML;
         setItems(items.filter(e => e.productCode != productCode))

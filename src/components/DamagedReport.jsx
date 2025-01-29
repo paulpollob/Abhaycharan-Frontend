@@ -1,6 +1,8 @@
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import Modal from "./Modal";
 import { useRef, useState } from "react";
+/* eslint-disable react/prop-types */
+
 
 const DamagedReport = ({ setLoading, wrnMsg, scssMsg, errMsg, tab }) =>{
     const [isModalOpen, setIsModalOpen] = useState(false)
@@ -314,7 +316,7 @@ const DamagedReport = ({ setLoading, wrnMsg, scssMsg, errMsg, tab }) =>{
                                                     {d.mrp}
                                                 </td>
                                                 <td className="px-6 py-4">
-                                                    <p1 className="text-2xl">৳</p1>{d.mrp * d.sellingQty}
+                                                    <p className="text-2xl">৳</p>{d.mrp * d.sellingQty}
                                                 </td>
                                             </tr>
                                         )
@@ -333,12 +335,12 @@ const DamagedReport = ({ setLoading, wrnMsg, scssMsg, errMsg, tab }) =>{
                                             <p>Total: </p>
                                         </td>
                                         <td className="px-6 py-4">
-                                            <p1 className="text-2xl">৳</p1>
-                                            <p1 className="text-xl">
+                                            <p className="text-2xl">৳</p>
+                                            <p className="text-xl">
                                                 {
                                                     (subTableData?.productInfo?.map(d => d.mrp * d.sellingQty))?.reduce((a, b) => a + b, 0)
                                                 }
-                                            </p1>
+                                            </p>
                                         </td>
                                     </tr>
                                 </tbody>

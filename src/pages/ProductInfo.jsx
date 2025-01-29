@@ -1,46 +1,61 @@
-import { useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import Navbar from "./nabbar";
-import { toast, ToastContainer } from "react-toastify";
-
-// /api/v1/products/addProduct/
+import { ToastContainer } from "react-toastify";
+import { MyContext } from "../Context"; 
+import CreatableSelect from "react-select/creatable"; 
 
 const ProductInfo = () => {
-    const [allProducts, setAllProducts] = useState([])
     const [showDropdown, setShowDropdown] = useState(false);
     const [addNew, setAddNew] = useState(true);
     const [loading, setLoading] = useState(false)
-    const [flg, setFlg] = useState(false);
     const [filteredSuggestions, setFilteredSuggestions] = useState([]);
-    const [searchTerm, setSearchTerm] = useState("")
+    const [searchTerm, setSearchTerm] = useState("") 
+    const { allProducts, category, setCategory, flg, setFlg, scssMsg, errMsg, wrnMsg } = useContext(MyContext);
     const [formData, setFormData] = useState({
         productCode: "",
+        productCategory: "",
         productName: "",
         packSize: "",
         tradePrice: "",
         mrp: ""
-    });
-
-
-
-    useEffect(() => { 
-            fetch(`${import.meta.env.VITE_HOST_LINK}/api/v1/products/findAllProduct/`)
-                .then(response => response.json())
-                .then(data => setAllProducts(data?.productInfoDtos)); 
-    }, [flg])
+    }); 
+    const [isLoading, setIsLoading] = useState(false);  
 
 
 
 
+
+
+
+
+
+
+    const handleCreate = (inputValue) => {
+        setIsLoading(true);
+        
+        setFormData({ ...formData, ['productCategory']: inputValue });
+        setTimeout(() => {
+            const newOption = createOption(inputValue);
+            setIsLoading(false);
+            setCategory((prev) => [...prev, newOption]); 
+        }, 1000);
+    };
+    const createOption = (label) => ({
+        label,
+        value: label.toLowerCase().replace(/\W/g, ''),
+    }); 
     const inputFieldOnBlur = () => setTimeout(() => setShowDropdown(false), 500)
-    const saveProductAction = async () => { 
-        if (formData.mrp == "" || formData.tradePrice == "" || formData.packSize == "" || formData.productName == "") {
+    const saveProductAction = async () => {
+        console.log("HK: formd: ", formData)
+        if (formData.mrp == "" || formData.tradePrice == "" || formData.packSize == "" || formData.productName == "" || formData.productCategory == "") {
             wrnMsg("Please enter all field!!!");
             return;
         }
         try {
             setLoading(true)
+            console.log("HK product: ", formData)
             let api = "";
-            if(formData.productCode==="") api = `${import.meta.env.VITE_HOST_LINK}/api/v1/products/addProduct/`
+            if (formData.productCode === "") api = `${import.meta.env.VITE_HOST_LINK}/api/v1/products/addProduct/`
             else api = `${import.meta.env.VITE_HOST_LINK}/api/v1/products/updateProduct/`
             const res = await fetch(api,
                 {
@@ -48,8 +63,8 @@ const ProductInfo = () => {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(formData)
                 }
-            ) 
-            const data = await res.json(); 
+            )
+            const data = await res.json();
             setFormData(data.productInfoDto)
             setFlg(!flg)
 
@@ -65,9 +80,9 @@ const ProductInfo = () => {
         }
 
     }
-    const scssMsg = (msg) => toast.success(msg);
-    const errMsg = (msg) => toast.error(msg);
-    const wrnMsg = (msg) => toast.warn(msg);
+
+
+ 
     const searchOnFocusAction = () => {
         setShowDropdown(true)
         setAddNew(false);
@@ -76,17 +91,17 @@ const ProductInfo = () => {
         setAddNew(true)
         setSearchTerm("")
         setFilteredSuggestions([])
-        setFormData({ productCode: "", productName: "", packSize: "", tradePrice: "", mrp: "" });
+        setFormData({ productCode: "", productCategory: "", productName: "", packSize: "", tradePrice: "", mrp: "" });
     }
     const updateAction = () => {
-        if (formData.productCode === "") {
+        if (formData?.productCode === "") {
             errMsg("please select product first!!!")
             return;
         }
         setAddNew(true)
         setSearchTerm("")
-        setFilteredSuggestions([]) 
-    }
+        setFilteredSuggestions([])
+    } 
     const filterSearchOnType = (event) => {
         const value = event.target.value;
         setSearchTerm(value);
@@ -172,11 +187,48 @@ const ProductInfo = () => {
                                 required
                             />
                         </div>
+
+                        <div className="form-control mb-4">
+                            <label className="label">
+                                <span className="label-text">Product Category!</span>
+                            </label>
+                            <div className="h-full w-full flex justify-center items-center border bg-slate- rounded-xl border-slate-700">
+                            <CreatableSelect styles={{
+                                control: (baseStyles, state) => ({
+                                    display: "flex ",
+                                    justifyContent: "center",
+                                    alighItem: "center",
+                                    height: "100%",
+                                    width: "100%", 
+                                    top: "0",
+                                    color: "white",
+                                    backgroundColor: `#334155 ${state.isDisabled && '#334155'}`
+                                }),
+                                menu: (baseStyles)=> (
+                                    { 
+                                        ...baseStyles,
+                                        backgroundColor: `#334155`,
+                                        color: "white"
+                                    }
+                                )
+                            }}
+                                className="  w-full h-full "
+                                name="productCategory"
+                                isClearable
+                                isDisabled={isLoading}
+                                isLoading={isLoading}
+                                onChange={(newValue) => setFormData({ ...formData, ['productCategory']: newValue.value })}
+                                onCreateOption={handleCreate}
+                                options={category}
+                                value={formData.productCategory}
+                            />
+                                </div> 
+                        </div>  
+
                         <div className="form-control mb-4">
                             <label className="label">
                                 <span className="label-text">Product Name</span>
-                            </label>
-
+                            </label> 
                             <input
                                 type="text"
                                 name="productName"

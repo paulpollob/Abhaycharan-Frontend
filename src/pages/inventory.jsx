@@ -1,17 +1,17 @@
-import { useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import Navbar from "./nabbar"
-import { toast, ToastContainer } from "react-toastify";
+import { ToastContainer } from "react-toastify";
+import { MyContext } from "../Context";
 
  
 
 
-const Inventory = () => {
-    const [allProducts, setAllProducts] = useState([])
+const Inventory = () => { 
     const [showDropdown, setShowDropdown] = useState(false); 
-    const [loading, setLoading] = useState(false)
-    const [flg, setFlg] = useState(false);
+    const [loading, setLoading] = useState(false) 
     const [filteredSuggestions, setFilteredSuggestions] = useState([]);
     const [searchTerm, setSearchTerm] = useState("")
+    const {allProducts, flg, setFlg, scssMsg, errMsg, wrnMsg} = useContext(MyContext); 
     const [formData, setFormData] = useState({
         productCode: "",
         productName: "",
@@ -21,12 +21,6 @@ const Inventory = () => {
     });
 
 
-
-    useEffect(() => { 
-            fetch(`${import.meta.env.VITE_HOST_LINK}/api/v1/products/findAllProduct/`)
-                .then(response => response.json())
-                .then(data => setAllProducts(data?.productInfoDtos)); 
-    }, [flg])
 
 
 
@@ -59,9 +53,6 @@ const Inventory = () => {
         }
 
     }
-    const scssMsg = (msg) => toast.success(msg);
-    const errMsg = (msg) => toast.error(msg);
-    const wrnMsg = (msg) => toast.warn(msg);
     const searchOnFocusAction = () => {
         setShowDropdown(true) 
     } 
@@ -80,10 +71,6 @@ const Inventory = () => {
             setFilteredSuggestions(filtered);
             setShowDropdown(true);
         }
-    };
-    const inputAction = (e) => {
-        let { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
     };
     const suggestionItemClickAction = (suggestion) => {
         setSearchTerm(suggestion.productCode + " | " + suggestion.productName); // Set the clicked suggestion in the input

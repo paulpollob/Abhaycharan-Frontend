@@ -1,23 +1,24 @@
-import { useState } from "react"
+import { useContext, useState } from "react"
 import Navbar from "./nabbar"
-import { toast, ToastContainer } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import ReportTab1 from "../components/ReportTab1";
 import ReceiveReportTab from "../components/ReceiveReportTab";
 import SoldReport from "../components/SoldReport";
 import DamagedReport from "../components/DamagedReport";
+import { MyContext } from "../Context";
 
+/* eslint-disable react/prop-types */
 
 function Report() {
 
-    const scssMsg = (msg) => toast.success(msg);
-    const errMsg = (msg) => toast.error(msg);
-    const wrnMsg = (msg) => toast.warn(msg);
+
+    const {scssMsg, errMsg, wrnMsg} = useContext(MyContext);
+
     const [loading, setLoading] = useState(false);
 
 
     const active = "text-white bg-blue-700 rounded-lg   w-full dark:bg-blue-600";
     const nactive = "rounded-lg hover:text-gray-900 bg-gray-50 hover:bg-gray-100 w-full dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-white"
-    const [single, setSingle] = useState(false);
     const [tab, setTab] = useState(0)
 
     return (
@@ -60,7 +61,7 @@ function Report() {
                             </li>
 
                         </ul>
-                        <div className={`relative flex w-full h-full overflow-hidden`}>
+                        <div className={`relative flex w-full min-h-full overflow-hidden`}>
                             <ReportTab1 setLoading={setLoading} wrnMsg={wrnMsg} errMsg={errMsg} scssMsg={scssMsg} tab={tab}></ReportTab1>
                             <ReceiveReportTab setLoading={setLoading} wrnMsg={wrnMsg} errMsg={errMsg} scssMsg={scssMsg} tab={tab}></ReceiveReportTab>
                             <SoldReport setLoading={setLoading} wrnMsg={wrnMsg} errMsg={errMsg} scssMsg={scssMsg} tab={tab}></SoldReport>
@@ -120,93 +121,6 @@ function Report() {
 } 
 
  
-const Tab4 = ({ tab }) => {
-    return (
-        <div style={{ transform: `translateX(-${tab * 100}%)` }} className={` transition-transform duration-500 ease-in-out absoslute s-0 w-1/2 translate-x-full p-6 min-w-full overflow-hidden bg-gray-50 text-medium text-gray-500 dark:text-gray-400 dark:bg-gray-800 rounded-lg ${(tab == 3) ? ' ' : ' '} `}>
-            <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">Setting Tab</h3>
-            <p className="mb-2">Nityananda.</p>
-
-
-            <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-                <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                    <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                        <tr>
-                            <th scope="col" className="px-6 py-3">
-                                Product name
-                            </th>
-                            <th scope="col" className="px-6 py-3">
-                                Color
-                            </th>
-                            <th scope="col" className="px-6 py-3">
-                                Category
-                            </th>
-                            <th scope="col" className="px-6 py-3">
-                                Price
-                            </th>
-                            <th scope="col" className="px-6 py-3">
-                                Action
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                            <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                Apple MacBook Pro 17"
-                            </th>
-                            <td className="px-6 py-4">
-                                Silver
-                            </td>
-                            <td className="px-6 py-4">
-                                Laptop
-                            </td>
-                            <td className="px-6 py-4">
-                                $2999
-                            </td>
-                            <td className="px-6 py-4">
-                                <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                            </td>
-                        </tr>
-                        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                            <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                Microsoft Surface Pro
-                            </th>
-                            <td className="px-6 py-4">
-                                White
-                            </td>
-                            <td className="px-6 py-4">
-                                Laptop PC
-                            </td>
-                            <td className="px-6 py-4">
-                                $1999
-                            </td>
-                            <td className="px-6 py-4">
-                                <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                            </td>
-                        </tr>
-                        <tr className="bg-white dark:bg-gray-800">
-                            <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                Magic Mouse 2
-                            </th>
-                            <td className="px-6 py-4">
-                                Black
-                            </td>
-                            <td className="px-6 py-4">
-                                Accessories
-                            </td>
-                            <td className="px-6 py-4">
-                                $99
-                            </td>
-                            <td className="px-6 py-4">
-                                <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <Loading></Loading>
-        </div>
-    )
-}
 
 
 
